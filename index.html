@@ -4,148 +4,183 @@
   <meta charset="UTF-8">
   <title>Quiz Vocabulaire</title>
   <link rel="stylesheet" href="vocabulaire.css">
-  
 </head>
 <body>
   <div id="container">
-    <h2>Quiz Vocabulaire – Anglais → Français</h2>
+    <h2>Quiz Vocabulaire
+
+     <label for="direction">Direction :</label>
+     <select id="direction" onchange="resetQuiz()">
+       <option value="en-fr">Anglais → Français</option>
+       <option value="fr-en">Français → Anglais</option>
+     </select>
+    </h2>
+
     <p id="question"></p>
     <input type="text" id="answer" placeholder="Ta réponse ici">
     <button onclick="checkAnswer()">Valider</button>
     <div id="feedback"></div>
-    <p id="score">Score : 0</p>
-    
+    <p id="score">Score total : 0</p>
   </div>
 
   <script>
     const vocab = {
-  "IT course": ["formation informatique"],
-  "CV": ["resume"],
-  "cover letter": ["lettre de motivation"],
-  "A job interview": ["un entretien d'embauche"],
-  "a trainee": ["un stagiaire"],
-  "To apply for a job": ["postuler", "faire une demande d'emploi"],
-  "an application": ["candidature"],
-  "a position": ["un poste"],
-  "The manager": ["le chef de projet"],
-  "Registered/main office": ["siège social"],
-  "To appoint": ["affecter", "nommer"],
-  "The user": ["l’utilisateur"],
-  "The customer": ["le client"],
-  "Private individuals": ["les particuliers"],
-  "Customer/after-sales service": ["service après-vente"],
-  "customer needs": ["les besoins du client"],
-  "Networking/computer/switch/router/server maintenance": ["maintenance du réseau", "maintenance des ordinateurs", "maintenance des répartiteurs réseau", "maintenance des routeurs", "maintenance des serveurs"],
-  "Website development/creation": ["développement web", "création de sites web"],
-  "Script creation": ["création de scripts"],
-  "Programming": ["programmation"],
-  "to program": ["programmer"],
-  "Encoding": ["codage"],
-  "to code": ["coder", "programmer"],
-  "Process planning/project management office": ["bureau d'étude"],
-  "System data processing": ["analyse des données"],
-  "Prospects/openings": ["débouchés"],
-  "Eco-design": ["éco-conception"],
-  "To take part in meetings": ["aller à des réunions"],
-  "To meet deadlines": ["respecter les délais"],
-  "To manage the database": ["traiter la base de données", "gérer la base de données"],
-  "To improve": ["améliorer"],
-  "improvement": ["amélioration"],
-  "To troubleshoot": ["régler un problème", "dépanner"],
-  "Troubleshooting": ["intervention pour régler un problème", "localiser une panne"],
-  "Troubleshooter": ["spécialiste (pour localiser une panne)", "expert (appelé en cas de crise)"],
-  "To format": ["formater"],
-  "To assemble": ["assembler"],
-  "to disassemble": ["désassembler"],
-  "to put something back together": ["réassembler"],
-  "B2B": ["business to business"],
-  "B2C": ["business to client"],
-  "Limited liability company": ["société à responsabilités limitées", "SARL"],
-  "STi2D": ["Sciences et technologies de l'industrie et du développement durable"],
-  "compulsory": ["obligatoire"],
-  "curriculum": ["programme d'études"],
-  "to have a record of + Vb-ing": ["être connu pour"],
-  "abroad": ["à l'étranger"],
-  "worldwide": ["dans le monde entier"],
-  "department": ["service"],
-  "schedule": ["emploi du temps"],
-  "turnover": ["chiffre d'affaires"],
-  "suppliers": ["fournisseurs"],
-  "achievements": ["réalisations"],
-  "at length": ["en détail"],
-  "to assess": ["évaluer"],
-  "to set out to learn": ["entreprendre", "décider d'apprendre"],
-  "someone to turn to": ["quelqu'un vers qui vous tourner"],
-  "to take somebody on": ["embaucher quelqu'un"],
-  "Sandwich course/work-study internship": ["formation en alternance"],
-  "Full-time": ["à plein temps"],
-  "Part-time": ["à temps partiel"],
-  "Temporary": ["temporaire"],
-  "Work-study": ["en alternance"]
-};
+      "IT course": ["formation informatique"],
+      "CV": ["resume"],
+      "cover letter": ["lettre de motivation"],
+      "A job interview": ["un entretien d'embauche"],
+      "a trainee": ["un stagiaire"],
+      "To apply for a job": ["postuler", "faire une demande d'emploi"],
+      "an application": ["candidature"],
+      "a position": ["un poste"],
+      "The manager": ["le chef de projet"],
+      "Registered/main office": ["siège social"],
+      "To appoint": ["affecter", "nommer"],
+      "The user": ["l’utilisateur"],
+      "The customer": ["le client"],
+      "Private individuals": ["les particuliers"],
+      "Customer/after-sales service": ["service après-vente"],
+      "customer needs": ["les besoins du client"],
+      "Networking/computer/switch/router/server maintenance": ["maintenance du réseau", "maintenance des ordinateurs", "maintenance des répartiteurs réseau", "maintenance des routeurs", "maintenance des serveurs"],
+      "Website development/creation": ["développement web", "création de sites web"],
+      "Script creation": ["création de scripts"],
+      "Programming": ["programmation"],
+      "to program": ["programmer"],
+      "Encoding": ["codage"],
+      "to code": ["coder", "programmer"],
+      "Process planning/project management office": ["bureau d'étude"],
+      "System data processing": ["analyse des données"],
+      "Prospects/openings": ["débouchés"],
+      "Eco-design": ["éco-conception"],
+      "To take part in meetings": ["aller à des réunions"],
+      "To meet deadlines": ["respecter les délais"],
+      "To manage the database": ["traiter la base de données", "gérer la base de données"],
+      "To improve": ["améliorer"],
+      "improvement": ["amélioration"],
+      "To troubleshoot": ["régler un problème", "dépanner"],
+      "Troubleshooting": ["intervention pour régler un problème", "localiser une panne"],
+      "Troubleshooter": ["spécialiste (pour localiser une panne)", "expert (appelé en cas de crise)"],
+      "To format": ["formater"],
+      "To assemble": ["assembler"],
+      "to disassemble": ["désassembler"],
+      "to put something back together": ["réassembler"],
+      "B2B": ["business to business"],
+      "B2C": ["business to client"],
+      "Limited liability company": ["société à responsabilités limitées", "SARL"],
+      "STi2D": ["Sciences et technologies de l'industrie et du développement durable"],
+      "compulsory": ["obligatoire"],
+      "curriculum": ["programme d'études"],
+      "to have a record of + Vb-ing": ["être connu pour"],
+      "abroad": ["à l'étranger"],
+      "worldwide": ["dans le monde entier"],
+      "department": ["service"],
+      "schedule": ["emploi du temps"],
+      "turnover": ["chiffre d'affaires"],
+      "suppliers": ["fournisseurs"],
+      "achievements": ["réalisations"],
+      "at length": ["en détail"],
+      "to assess": ["évaluer"],
+      "to set out to learn": ["entreprendre", "décider d'apprendre"],
+      "someone to turn to": ["quelqu'un vers qui vous tourner"],
+      "to take somebody on": ["embaucher quelqu'un"],
+      "Sandwich course/work-study internship": ["formation en alternance"],
+      "Full-time": ["à plein temps"],
+      "Part-time": ["à temps partiel"],
+      "Temporary": ["temporaire"],
+      "Work-study": ["en alternance"]
+    };
 
     let questions = Object.entries(vocab);
-    questions = questions.sort(() => Math.random() - 0.5);
     let index = 0;
     let score = 0;
+    let direction = "en-fr";
+    let wordStats = {}; // Pour suivre les scores par mot
 
     const questionEl = document.getElementById("question");
     const answerEl = document.getElementById("answer");
     const feedbackEl = document.getElementById("feedback");
     const scoreEl = document.getElementById("score");
+    const directionEl = document.getElementById("direction");
+
+    // Valider la réponse avec la touche Entrée
+    answerEl.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        checkAnswer();
+      }
+    });
+
+    function resetQuiz() {
+      direction = directionEl.value;
+      index = 0;
+      score = 0;
+      wordStats = {};
+      scoreEl.textContent = `Score total : ${score}`;
+      questions = Object.entries(vocab).sort(() => Math.random() - 0.5);
+      loadQuestion();
+    }
 
     function loadQuestion() {
       if (index < questions.length) {
-        questionEl.textContent = `Traduire en français : ${questions[index][0]}`;
+        const questionText = direction === "en-fr" ? questions[index][0] : questions[index][1][0];
+        questionEl.textContent = `Traduire ${direction === "en-fr" ? "en français" : "en anglais"} : ${questionText}`;
         answerEl.value = "";
         feedbackEl.textContent = "";
       } else {
         alert(`Quiz terminé ! Ton score : ${score}/${questions.length}`);
-        location.reload();
+        console.table(wordStats);
+        resetQuiz();
       }
     }
 
     function similarity(a, b) {
-      let matches = 0;
-      const minLen = Math.min(a.length, b.length);
-      for (let i = 0; i < minLen; i++) {
-        if (a[i] === b[i]) matches++;
+      a = a.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+      b = b.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+      if (a === b) return 1;
+
+      let longer = a.length > b.length ? a : b;
+      let shorter = a.length > b.length ? b : a;
+      let differences = 0;
+      for (let i = 0; i < shorter.length; i++) {
+        if (a[i] !== b[i]) differences++;
       }
-      return matches / Math.max(a.length, b.length);
+      differences += longer.length - shorter.length;
+      return 1 - differences / longer.length;
     }
 
     function checkAnswer() {
       const userAnswer = answerEl.value.trim().toLowerCase();
-      const correctAnswers = questions[index][1].map(a => a.toLowerCase());
+      let correctAnswers = direction === "en-fr"
+        ? questions[index][1].map(a => a.toLowerCase())
+        : [questions[index][0].toLowerCase()];
+
       let bestScore = 0;
-      let bestAnswer = "";
 
       correctAnswers.forEach(ans => {
-        const score = similarity(userAnswer, ans);
-        if (score > bestScore) {
-          bestScore = score;
-          bestAnswer = ans;
-        }
+        const scoreSim = similarity(userAnswer, ans);
+        if (scoreSim > bestScore) bestScore = scoreSim;
       });
+
+      const wordKey = direction === "en-fr" ? questions[index][0] : questions[index][1][0];
+      wordStats[wordKey] = wordStats[wordKey] || { correct: 0, attempts: 0 };
+      wordStats[wordKey].attempts++;
 
       if (bestScore === 1) {
         feedbackEl.innerHTML = "<span class='correct'>✅ Correct !</span>";
         score++;
-        scoreEl.textContent = `Score : ${score}`;
-        index++;
-        setTimeout(loadQuestion, 1000);
-      } else if (bestScore >= 0.5) {
-        feedbackEl.innerHTML = `<span class='partial'>⚠️ Partiellement juste !</span><br>Ta réponse : ${userAnswer}<br>Réponse attendue : ${correctAnswers.join(", ")}`;
-        index++;
-        setTimeout(loadQuestion, 5000);
+        wordStats[wordKey].correct++;
+      } else if (bestScore >= 0.7) {
+        feedbackEl.innerHTML = `<span class='partial'>⚠️ Partiellement correct !</span><br>Réponse attendue : ${correctAnswers.join(", ")}`;
       } else {
-        feedbackEl.innerHTML = `<span class='wrong'>❌ Faux !</span><br>Ta réponse : ${userAnswer}<br>Réponse attendue : ${correctAnswers.join(", ")}`;
-        index++;
-        setTimeout(loadQuestion, 5000);
+        feedbackEl.innerHTML = `<span class='wrong'>❌ Faux !</span><br>Réponse attendue : ${correctAnswers.join(", ")}`;
       }
+
+      scoreEl.textContent = `Score total : ${score}`;
+      index++;
+      setTimeout(loadQuestion, 2000);
     }
 
-    loadQuestion();
+    resetQuiz();
   </script>
 </body>
 </html>
