@@ -1,0 +1,121 @@
+
+    /* Font et body général */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1a1a1a, #111111);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+    }
+
+    /* Container central */
+    #container {
+      background: linear-gradient(145deg, #222222, #333333);
+      padding: 40px;
+      border-radius: 25px;
+      width: 90%;
+      max-width: 600px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(255, 0, 150, 0.4), 0 0 40px rgba(0, 200, 255, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Titre avec gradient animé */
+   h2 {
+  font-size: 28px;
+  margin-bottom: 25px;
+  background: linear-gradient(90deg, #ff0055, #ffcc00, #00d4ff);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block; /* Important pour que le gradient fonctionne */
+  animation: gradientShift 3s ease infinite;
+   }
+
+
+    @keyframes gradientShift {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    /* Question */
+    #question {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #ffffff;
+      text-shadow: 0 0 5px #00d4ff;
+    }
+
+    /* Input */
+    input {
+      font-size: 16px;
+      width: 80%;
+      padding: 14px;
+      border: 2px solid #ff0055;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      background: rgba(0,0,0,0.25);
+      color: #fff;
+      transition: all 0.3s ease;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #00d4ff;
+      box-shadow: 0 0 12px #00d4ff;
+      background: rgba(0,0,0,0.4);
+    }
+
+    /* Bouton */
+    button {
+      font-size: 16px;
+      padding: 12px 30px;
+      background: linear-gradient(90deg, #ff0055, #ffcc00, #00d4ff);
+      color: #000;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px #ff0055, 0 0 20px #00d4ff;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #ffcc00, 0 0 30px #00d4ff;
+    }
+
+    /* Feedback */
+    #feedback {
+      margin-top: 25px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .correct {
+      color: #00ff99;
+      text-shadow: 0 0 10px #00ff99;
+    }
+
+    .partial {
+      color: #ffcc00;
+      text-shadow: 0 0 8px #ffcc00;
+    }
+
+    .wrong {
+      color: #ff0055;
+      text-shadow: 0 0 8px #ff0055;
+    }
+
+    /* Score */
+    #score {
+      margin-top: 25px;
+      font-size: 20px;
+      text-shadow: 0 0 5px #00d4ff;
+    }
+ 

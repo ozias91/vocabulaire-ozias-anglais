@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz Vocabulaire</title>
+  <link rel="stylesheet" href="vocabulaire.css">
+  
+</head>
+<body>
+  <div id="container">
+    <h2>Quiz Vocabulaire – Anglais → Français</h2>
+    <p id="question"></p>
+    <input type="text" id="answer" placeholder="Ta réponse ici">
+    <button onclick="checkAnswer()">Valider</button>
+    <div id="feedback"></div>
+    <p id="score">Score : 0</p>
+    
+  </div>
+
+  <script>
+    const vocab = {
+      "IT course": ["formation informatique"],
+      "CV": ["resume"],
+      "cover letter": ["lettre de motivation"],
+      "A job interview": ["un entretien d'embauche"],
+      "a trainee": ["un stagiaire"],
+      "To apply for a job": ["postuler", "faire une demande d'emploi"],
+      "an application": ["candidature"],
+      "a position": ["un poste"],
+      "The manager": ["le chef de projet"],
+      "Registered/main office": ["siège social"],
+      "To appoint": ["affecter", "nommer"],
+      "The user": ["l’utilisateur"],
+      "The customer": ["le client"],
+      "Private individuals": ["les particuliers"],
+      "Customer/after-sales service": ["service après-vente"],
+      "customer needs": ["les besoins du clients"]
+      // Tu peux ajouter le reste ici pour compléter
+    };
+
+    let questions = Object.entries(vocab);
+    questions = questions.sort(() => Math.random() - 0.5);
+    let index = 0;
+    let score = 0;
+
+    const questionEl = document.getElementById("question");
+    const answerEl = document.getElementById("answer");
+    const feedbackEl = document.getElementById("feedback");
+    const scoreEl = document.getElementById("score");
+
+    function loadQuestion() {
+      if (index < questions.length) {
+        questionEl.textContent = `Traduire en français : ${questions[index][0]}`;
+        answerEl.value = "";
+        feedbackEl.textContent = "";
+      } else {
+        alert(`Quiz terminé ! Ton score : ${score}/${questions.length}`);
+        location.reload();
+      }
+    }
+
+    function similarity(a, b) {
+      let matches = 0;
+      const minLen = Math.min(a.length, b.length);
+      for (let i = 0; i < minLen; i++) {
+        if (a[i] === b[i]) matches++;
+      }
+      return matches / Math.max(a.length, b.length);
+    }
+
+    function checkAnswer() {
+      const userAnswer = answerEl.value.trim().toLowerCase();
+      const correctAnswers = questions[index][1].map(a => a.toLowerCase());
+      let bestScore = 0;
+      let bestAnswer = "";
+
+      correctAnswers.forEach(ans => {
+        const score = similarity(userAnswer, ans);
+        if (score > bestScore) {
+          bestScore = score;
+          bestAnswer = ans;
+        }
+      });
+
+      if (bestScore === 1) {
+        feedbackEl.innerHTML = "<span class='correct'>✅ Correct !</span>";
+        score++;
+        scoreEl.textContent = `Score : ${score}`;
+        index++;
+        setTimeout(loadQuestion, 1000);
+      } else if (bestScore >= 0.5) {
+        feedbackEl.innerHTML = `<span class='partial'>⚠️ Partiellement juste !</span><br>Ta réponse : ${userAnswer}<br>Réponse attendue : ${correctAnswers.join(", ")}`;
+        index++;
+        setTimeout(loadQuestion, 5000);
+      } else {
+        feedbackEl.innerHTML = `<span class='wrong'>❌ Faux !</span><br>Ta réponse : ${userAnswer}<br>Réponse attendue : ${correctAnswers.join(", ")}`;
+        index++;
+        setTimeout(loadQuestion, 5000);
+      }
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
