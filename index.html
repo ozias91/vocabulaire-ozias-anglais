@@ -133,7 +133,7 @@
         score++;
         scoreEl.textContent = `Score : ${score}`;
         index++;
-        setTimeout(loadQuestion, 100);
+        setTimeout(loadQuestion, 1000);
       } else if (bestScore >= 0.5) {
         feedbackEl.innerHTML = `<span class='partial'>⚠️ Partiellement juste !</span><br>Ta réponse : ${userAnswer}<br>Réponse attendue : ${correctAnswers.join(", ")}`;
         index++;
