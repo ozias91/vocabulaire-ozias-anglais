@@ -25,17 +25,16 @@
     }
 
     /* Titre avec gradient animé */
-   h2 {
-  font-size: 28px;
-  margin-bottom: 25px;
-  background: linear-gradient(90deg, #ff0055, #ffcc00, #00d4ff);
-  background-size: 300% 300%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  display: inline-block; /* Important pour que le gradient fonctionne */
-  animation: gradientShift 3s ease infinite;
-   }
-
+    h2 {
+      font-size: 28px;
+      margin-bottom: 25px;
+      background: linear-gradient(90deg, #ff0055, #ffcc00, #00d4ff);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+      animation: gradientShift 3s ease infinite;
+    }
 
     @keyframes gradientShift {
       0% {background-position: 0% 50%;}
@@ -76,6 +75,7 @@
     button {
       font-size: 16px;
       padding: 12px 30px;
+      margin: 10px;
       background: linear-gradient(90deg, #ff0055, #ffcc00, #00d4ff);
       color: #000;
       border: none;
@@ -118,4 +118,4 @@
       font-size: 20px;
       text-shadow: 0 0 5px #00d4ff;
     }
- 
+  

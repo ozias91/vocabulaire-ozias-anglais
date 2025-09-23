@@ -4,21 +4,24 @@
   <meta charset="UTF-8">
   <title>Quiz Vocabulaire</title>
   <link rel="stylesheet" href="vocabulaire.css">
+  
 </head>
 <body>
   <div id="container">
-    <h2>Quiz Vocabulaire
-
-     <label for="direction">Direction :</label>
-     <select id="direction" onchange="resetQuiz()">
-       <option value="en-fr">Anglais → Français</option>
-       <option value="fr-en">Français → Anglais</option>
-     </select>
+    <h2>
+      Quiz Vocabulaire<br>
+      <label for="direction">Direction :</label>
+      <select id="direction" onchange="resetQuiz()">
+        <option value="en-fr">Anglais → Français</option>
+        <option value="fr-en">Français → Anglais</option>
+      </select>
     </h2>
 
     <p id="question"></p>
     <input type="text" id="answer" placeholder="Ta réponse ici">
+    <br>
     <button onclick="checkAnswer()">Valider</button>
+    <button onclick="nextQuestion()">Question suivante</button>
     <div id="feedback"></div>
     <p id="score">Score total : 0</p>
   </div>
@@ -94,7 +97,7 @@
     let index = 0;
     let score = 0;
     let direction = "en-fr";
-    let wordStats = {}; // Pour suivre les scores par mot
+    let wordStats = {}; 
 
     const questionEl = document.getElementById("question");
     const answerEl = document.getElementById("answer");
@@ -102,7 +105,6 @@
     const scoreEl = document.getElementById("score");
     const directionEl = document.getElementById("direction");
 
-    // Valider la réponse avec la touche Entrée
     answerEl.addEventListener("keydown", function(event) {
       if (event.key === "Enter") {
         checkAnswer();
@@ -176,8 +178,11 @@
       }
 
       scoreEl.textContent = `Score total : ${score}`;
+    }
+
+    function nextQuestion() {
       index++;
-      setTimeout(loadQuestion, 2000);
+      loadQuestion();
     }
 
     resetQuiz();
