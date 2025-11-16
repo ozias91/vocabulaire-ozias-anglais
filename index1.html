@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Quiz Vocabulaire englais</title>
+    <link rel="stylesheet" href="vocabulaire.css" />
+  </head>
+  <body>
+    <div id="container">
+      <ul class="menu-quiz">
+        <li><a href="index2.html">Quiz espagnol </a></li>
+      </ul>
+      <h2>
+        Quiz Vocabulaire<br />
+        <label for="direction">Direction :</label>
+        <select id="direction" onchange="resetQuiz()">
+          <option value="en-fr">Anglais → Français</option>
+          <option value="fr-en">Français → Anglais</option>
+        </select>
+      </h2>
+
+      <p id="question"></p>
+      <input type="text" id="answer" placeholder="Ta réponse ici" />
+      <br />
+      <button onclick="checkAnswer()">Valider</button>
+      <button onclick="nextQuestion()">Question suivante</button>
+      <div id="feedback"></div>
+      <p id="score">Score total : 0</p>
+    </div>
+
+    <script>
+      const vocab = {
+        "IT course": ["formation informatique"],
+        CV: ["resume"],
+        "cover letter": ["lettre de motivation"],
+        "A job interview": ["un entretien d'embauche"],
+        "a trainee": ["un stagiaire"],
+        "To apply for a job": ["postuler", "faire une demande d'emploi"],
+        "an application": ["candidature"],
+        "a position": ["un poste"],
+        "The manager": ["le chef de projet"],
+        "Registered/main office": ["siège social"],
+        "To appoint": ["affecter", "nommer"],
+        "The user": ["l’utilisateur"],
+        "The customer": ["le client"],
+        "Private individuals": ["les particuliers"],
+        "Customer/after-sales service": ["service après-vente"],
+        "customer needs": ["les besoins du client"],
+        "Networking/computer/switch/router/server maintenance": [
+          "maintenance du réseau",
+          "maintenance des ordinateurs",
+          "maintenance des répartiteurs réseau",
+          "maintenance des routeurs",
+          "maintenance des serveurs",
+        ],
+        "Website development/creation": [
+          "développement web",
+          "création de sites web",
+        ],
+        "Script creation": ["création de scripts"],
+        Programming: ["programmation"],
+        "to program": ["programmer"],
+        Encoding: ["codage"],
+        "to code": ["coder", "programmer"],
+        "Process planning/project management office": ["bureau d'étude"],
+        "System data processing": ["analyse des données"],
+        "Prospects/openings": ["débouchés"],
+        "Eco-design": ["éco-conception"],
+        "To take part in meetings": ["aller à des réunions"],
+        "To meet deadlines": ["respecter les délais"],
+        "To manage the database": [
+          "traiter la base de données",
+          "gérer la base de données",
+        ],
+        "To improve": ["améliorer"],
+        improvement: ["amélioration"],
+        "To troubleshoot": ["régler un problème", "dépanner"],
+        Troubleshooting: [
+          "intervention pour régler un problème",
+          "localiser une panne",
+        ],
+        Troubleshooter: [
+          "spécialiste (pour localiser une panne)",
+          "expert (appelé en cas de crise)",
+        ],
+        "To format": ["formater"],
+        "To assemble": ["assembler"],
+        "to disassemble": ["désassembler"],
+        "to put something back together": ["réassembler"],
+        B2B: ["business to business"],
+        B2C: ["business to client"],
+        "Limited liability company": [
+          "société à responsabilités limitées",
+          "SARL",
+        ],
+        STi2D: [
+          "Sciences et technologies de l'industrie et du développement durable",
+        ],
+        compulsory: ["obligatoire"],
+        curriculum: ["programme d'études"],
+        "to have a record of + Vb-ing": ["être connu pour"],
+        abroad: ["à l'étranger"],
+        worldwide: ["dans le monde entier"],
+        department: ["service"],
+        schedule: ["emploi du temps"],
+        turnover: ["chiffre d'affaires"],
+        suppliers: ["fournisseurs"],
+        achievements: ["réalisations"],
+        "at length": ["en détail"],
+        "to assess": ["évaluer"],
+        "to set out to learn": ["entreprendre", "décider d'apprendre"],
+        "someone to turn to": ["quelqu'un vers qui vous tourner"],
+        "to take somebody on": ["embaucher quelqu'un"],
+        "Sandwich course/work-study internship": ["formation en alternance"],
+        "Full-time": ["à plein temps"],
+        "Part-time": ["à temps partiel"],
+        Temporary: ["temporaire"],
+        "Work-study": ["en alternance"],
+      };
+
+      let questions = Object.entries(vocab);
+      let index = 0;
+      let score = 0;
+      let direction = "en-fr";
+      let wordStats = {};
+
+      const questionEl = document.getElementById("question");
+      const answerEl = document.getElementById("answer");
+      const feedbackEl = document.getElementById("feedback");
+      const scoreEl = document.getElementById("score");
+      const directionEl = document.getElementById("direction");
+
+      answerEl.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+          checkAnswer();
+        }
+      });
+
+      function resetQuiz() {
+        direction = directionEl.value;
+        index = 0;
+        score = 0;
+        wordStats = {};
+        scoreEl.textContent = `Score total : ${score}`;
+        questions = Object.entries(vocab).sort(() => Math.random() - 0.5);
+        loadQuestion();
+      }
+
+      function loadQuestion() {
+        if (index < questions.length) {
+          const questionText =
+            direction === "en-fr"
+              ? questions[index][0]
+              : questions[index][1][0];
+          questionEl.textContent = `Traduire ${
+            direction === "en-fr" ? "en français" : "en anglais"
+          } : ${questionText}`;
+          answerEl.value = "";
+          feedbackEl.textContent = "";
+        } else {
+          alert(`Quiz terminé ! Ton score : ${score}/${questions.length}`);
+          console.table(wordStats);
+          resetQuiz();
+        }
+      }
+
+      function similarity(a, b) {
+        a = a
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .toLowerCase();
+        b = b
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .toLowerCase();
+
+        if (a === b) return 1;
+
+        let longer = a.length > b.length ? a : b;
+        let shorter = a.length > b.length ? b : a;
+        let differences = 0;
+        for (let i = 0; i < shorter.length; i++) {
+          if (a[i] !== b[i]) differences++;
+        }
+        differences += longer.length - shorter.length;
+        return 1 - differences / longer.length;
+      }
+
+      function checkAnswer() {
+        const userAnswer = answerEl.value.trim().toLowerCase();
+        let correctAnswers =
+          direction === "en-fr"
+            ? questions[index][1].map((a) => a.toLowerCase())
+            : [questions[index][0].toLowerCase()];
+
+        let bestScore = 0;
+
+        correctAnswers.forEach((ans) => {
+          const scoreSim = similarity(userAnswer, ans);
+          if (scoreSim > bestScore) bestScore = scoreSim;
+        });
+
+        const wordKey =
+          direction === "en-fr" ? questions[index][0] : questions[index][1][0];
+        wordStats[wordKey] = wordStats[wordKey] || { correct: 0, attempts: 0 };
+        wordStats[wordKey].attempts++;
+
+        if (bestScore === 1) {
+          feedbackEl.innerHTML = "<span class='correct'>✅ Correct !</span>";
+          score++;
+          wordStats[wordKey].correct++;
+        } else if (bestScore >= 0.7) {
+          feedbackEl.innerHTML = `<span class='partial'>⚠️ Partiellement correct !</span><br>Réponse attendue : ${correctAnswers.join(
+            ", "
+          )}`;
+        } else {
+          feedbackEl.innerHTML = `<span class='wrong'>❌ Faux !</span><br>Réponse attendue : ${correctAnswers.join(
+            ", "
+          )}`;
+        }
+
+        scoreEl.textContent = `Score total : ${score}`;
+      }
+
+      function nextQuestion() {
+        index++;
+        loadQuestion();
+      }
+
+      resetQuiz();
+    </script>
+  </body>
+</html>
