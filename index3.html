@@ -45,7 +45,7 @@
         "To reach forward": ["atteindre devant"],
         "To be able to": ["être capable de"],
         can: ["pouvoir"],
-        "A surgeon": ["un chirurgien", "une chirurgie"],
+        "A surgeon": ["un chirurgien"],
         "To undergo a surgical operation": ["subir une opération chirurgicale"],
         "To lead down": ["mener à"],
         Shoulder: ["l'épaule"],
@@ -161,10 +161,10 @@
           if (scoreSim > bestScore) bestScore = scoreSim;
         });
 
-        if (bestScore === 1) {
+        if (bestScore === 0.9) {
           feedbackEl.innerHTML = "<span class='correct'>✅ Correct !</span>";
           score++;
-        } else if (bestScore >= 0.7) {
+        } else if (bestScore >= 0.5) {
           feedbackEl.innerHTML = `<span class='partial'>⚠️ Partiellement correct !</span><br>Réponse attendue : ${correctAnswers.join(
             ", "
           )}`;
