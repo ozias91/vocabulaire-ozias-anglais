@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Quiz Vocabulaire</title>
+    <link rel="stylesheet" href="vocabulaire.css" />
+  </head>
+  <body>
+    <div id="container">
+      <h2>
+        Quiz Vocabulaire – demain 17/11/2025 <br />
+        <label for="direction">Direction :</label>
+        <select id="direction" onchange="resetQuiz()">
+          <option value="en-fr">Anglais → Français</option>
+          <option value="fr-en">Français → Anglais</option>
+        </select>
+      </h2>
+
+      <p id="question"></p>
+      <input type="text" id="answer" placeholder="Ta réponse ici" />
+      <br />
+      <button onclick="checkAnswer()">Valider</button>
+      <button onclick="nextQuestion()">Question suivante</button>
+      <div id="feedback"></div>
+      <p id="score">Score total : 0</p>
+    </div>
+
+    <script>
+      const vocab = {
+        "A prosthetic": ["une prothèse"],
+        Prostheses: ["des prothèses"],
+        "A prosthetic arm/leg": ["un bras artificiel"],
+        "A prosthetic leg": ["une jambe artificielle"],
+        "To move": ["bouger", "se mouvoir"],
+        "A device": ["un appareil"],
+        Usual: ["habituel"],
+        "To allow sb to do sth": [
+          "permettre à quelqu’un de faire quelque chose",
+        ],
+        "To enable sb to do sth": [
+          "permettre à quelqu’un de faire quelque chose",
+        ],
+        "To reach up": ["atteindre en haut"],
+        "To reach down": ["atteindre en bas"],
+        "To reach forward": ["atteindre devant"],
+        "To be able to": ["être capable de"],
+        can: ["pouvoir"],
+        "A surgeon": ["un chirurgien", "une chirurgie"],
+        "To undergo a surgical operation": ["subir une opération chirurgicale"],
+        "To lead down": ["mener à"],
+        Shoulder: ["l’épaule"],
+        Arm: ["bras"],
+        Elbow: ["coude"],
+        Wrist: ["poignet"],
+        Chest: ["la poitrine"],
+        Hand: ["main"],
+        Finger: ["doigt"],
+        Articulations: ["articulations"],
+        "A process": ["un processus"],
+        Nerves: ["nerfs"],
+        "Spare muscles": ["muscles restants"],
+        "Remaining nerves": ["nerfs restants"],
+        "To amplify tiny signals": ["amplifier les petits signaux"],
+        Skin: ["peau"],
+        Brain: ["cerveau"],
+        "Further developments": ["des développements supplémentaires"],
+        "To hold": ["tenir"],
+        "To grasp": ["saisir"],
+        "To catch": ["attraper"],
+        "To bend": ["plier"],
+        "To lift": ["soulever"],
+        "An amputee": ["une personne amputée"],
+        "The wearer": ["un porteur"],
+        "To provide sb with": ["donner", "fournir à quelqu’un"],
+        "To improve her way of life": ["améliorer sa vie"],
+        "To replace": ["remplacer"],
+        "To implant into": ["implanter dans"],
+        "To act as": ["agir"],
+        "To act like": ["se comporter comme"],
+        "Sensory perception": ["perception sensorielle"],
+        "To send neurological signals": ["envoyer des signaux neurologiques"],
+        "To trigger a movement": ["déclencher un mouvement"],
+      };
+
+      let questions = Object.entries(vocab);
+      let index = 0;
+      let score = 0;
+      let direction = "en-fr";
+      let wordStats = {};
+
+      const questionEl = document.getElementById("question");
+      const answerEl = document.getElementById("answer");
+      const feedbackEl = document.getElementById("feedback");
+      const scoreEl = document.getElementById("score");
+      const directionEl = document.getElementById("direction");
+
+      answerEl.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") checkAnswer();
+      });
+
+      function resetQuiz() {
+        direction = directionEl.value;
+        index = 0;
+        score = 0;
+        wordStats = {};
+        scoreEl.textContent = `Score total : ${score}`;
+        questions = Object.entries(vocab).sort(() => Math.random() - 0.5);
+        loadQuestion();
+      }
+
+      function loadQuestion() {
+        if (index < questions.length) {
+          const questionText =
+            direction === "en-fr"
+              ? questions[index][0]
+              : questions[index][1][0];
+          questionEl.textContent = `Traduire ${
+            direction === "en-fr" ? "en français" : "en anglais"
+          } : ${questionText}`;
+          answerEl.value = "";
+          feedbackEl.textContent = "";
+        } else {
+          alert(`Quiz terminé ! Ton score : ${score}/${questions.length}`);
+          resetQuiz();
+        }
+      }
+
+      function similarity(a, b) {
+        a = a
+          .normalize("NFD")
+          .replace(/\p{Diacritic}/gu, "")
+          .toLowerCase();
+        b = b
+          .normalize("NFD")
+          .replace(/\p{Diacritic}/gu, "")
+          .toLowerCase();
+
+        if (a === b) return 1;
+
+        let longer = a.length > b.length ? a : b;
+        let shorter = a.length > b.length ? b : a;
+        let differences = 0;
+
+        for (let i = 0; i < shorter.length; i++)
+          if (a[i] !== b[i]) differences++;
+        differences += longer.length - shorter.length;
+
+        return 1 - differences / longer.length;
+      }
+
+      function checkAnswer() {
+        const userAnswer = answerEl.value.trim().toLowerCase();
+        let correctAnswers =
+          direction === "en-fr"
+            ? questions[index][1].map((a) => a.toLowerCase())
+            : [questions[index][0].toLowerCase()];
+
+        let bestScore = 0;
+        correctAnswers.forEach((ans) => {
+          const scoreSim = similarity(userAnswer, ans);
+          if (scoreSim > bestScore) bestScore = scoreSim;
+        });
+
+        if (bestScore === 1) {
+          feedbackEl.innerHTML = "<span class='correct'>✅ Correct !</span>";
+          score++;
+        } else if (bestScore >= 0.7) {
+          feedbackEl.innerHTML = `<span class='partial'>⚠️ Partiellement correct !</span><br>Réponse attendue : ${correctAnswers.join(
+            ", "
+          )}`;
+        } else {
+          feedbackEl.innerHTML = `<span class='wrong'>❌ Faux !</span><br>Réponse attendue : ${correctAnswers.join(
+            ", "
+          )}`;
+        }
+
+        scoreEl.textContent = `Score total : ${score}`;
+      }
+
+      function nextQuestion() {
+        index++;
+        loadQuestion();
+      }
+
+      resetQuiz();
+    </script>
+  </body>
+</html>
